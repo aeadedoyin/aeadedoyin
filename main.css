@@ -21,10 +21,14 @@ body {
     margin: auto 2rem;
 }
 
-.social, .footer, a {
+.social, .foot, a {
     margin: 2rem 0;
     color: chocolate;
     font-family: consolas, 'Courier New', Courier, monospace;
+}
+
+.foot {
+    margin-bottom: 4rem;
 }
 
 img {
