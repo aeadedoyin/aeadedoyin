@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Unna&display=swap');
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Unna', Georgia, 'Times New Roman', Times, serif;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    text-align: center;
+}
+
+.center{
+    margin: auto 2rem;
+}
+
+.social, a {
+    margin: 3rem 0;
+    color: chocolate;
+    font-family: consolas, 'Courier New', Courier, monospace;
+}
+
+img {
+    height: 20vh;
+    width: 20vh;
+    border-radius: 50%;
+    margin: 1rem 0;
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+	-moz-box-shadow: 0 10px 6px -6px #777;
+	box-shadow: 0 10px 6px -6px #777;
+}
+
+h1 {
+    display: block;
+    font-size: 10vw !important;
+    font-weight: lighter;
+    line-height: 1;
+    position: fixed;
+    bottom: 10%;
+    width: 100%;
+    border: 0;
+    font-size: 100%;
+}
