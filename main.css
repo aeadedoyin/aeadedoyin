@@ -21,7 +21,7 @@ body {
     margin: auto 2rem;
 }
 
-.social, a {
+.social, .footer, a {
     margin: 3rem 0;
     color: chocolate;
     font-family: consolas, 'Courier New', Courier, monospace;
@@ -38,16 +38,19 @@ img {
 }
 
 h1 {
+    display: block;
     font-size: 10vw !important;
     font-weight: lighter;
     line-height: 1;
+    position: fixed;
+    bottom: 15%;
     width: 100%;
+    border: 0;
     font-size: 100%;
 }
 
-footer {
-    display: block;
+.footer {
+    width: 100%;
     position: fixed;
-    bottom: 10%;
-    border: 0;
+    bottom: 5%;
 }
