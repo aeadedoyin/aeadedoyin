@@ -38,13 +38,16 @@ img {
 }
 
 h1 {
-    display: block;
     font-size: 10vw !important;
     font-weight: lighter;
     line-height: 1;
+    width: 100%;
+    font-size: 100%;
+}
+
+footer {
+    display: block;
     position: fixed;
     bottom: 10%;
-    width: 100%;
     border: 0;
-    font-size: 100%;
 }
