@@ -1,52 +1,102 @@
-@import url('https://fonts.googleapis.com/css?family=Unna&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
 
 *,
 *:before,
 *:after {
-    box-sizing: inherit;
-    margin: 0;
-    padding: 0;
+  cursor: none;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Unna', Georgia, 'Times New Roman', Times, serif;
-    font-size: 24px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    text-align: center;
+  font-family: Karla, Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  text-align: center;
 }
 
-.center{
-    margin: auto 2rem;
+a {
+  text-decoration: none;
 }
 
-.social, .foot, a {
-    margin: 2rem 0;
-    color: chocolate;
-    font-family: consolas, 'Courier New', Courier, monospace;
+.center {
+  margin: auto 2rem;
 }
 
-.foot {
-    margin-bottom: 4rem;
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0;
+  font-size: 1rem;
+}
+
+.social > a {
+  color: chocolate;
+  display: block;
+  margin: 0 0.5rem;
+}
+
+.bio {
+  line-height: 1;
+  margin: 2rem 0;
+  color: gray;
 }
 
 img {
-    height: 20vh;
-    width: 20vh;
-    border-radius: 50%;
-    margin: 1rem 0;
-    -webkit-box-shadow: 0 10px 6px -6px #777;
-	-moz-box-shadow: 0 10px 6px -6px #777;
-	box-shadow: 0 10px 6px -6px #777;
+  height: 25vh;
+  width: 25vh;
+  border-radius: 50%;
+  margin: 1rem 0;
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+  -moz-box-shadow: 0 10px 6px -6px #777;
+  box-shadow: 0 10px 6px -6px #777;
 }
 
 h1 {
-    display: block;
-    font-size: 10vw !important;
-    font-weight: lighter;
-    line-height: 1;
-    width: 100%;
-    border: 0;
-    font-size: 100%;
+  display: block;
+  font-family: 'Unna', Georgia, 'Times New Roman', Times, serif;
+  font-size: 10vw !important;
+  font-weight: lighter;
+  line-height: 1;
+  width: 100%;
+  border: 0;
+  font-size: 100%;
 }
+
+.hover-under {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-under:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0px;
+  left: 0;
+  background-color: chocolate;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-under:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.paystack {
+  color: #110b33;
+}
+
+.paystack::after {
+  background-color: #110b33;
+}
+
+/* Cursor Vibes */
