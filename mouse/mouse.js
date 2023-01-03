@@ -3,10 +3,6 @@ const dotOuter = document.querySelector('.dot-outer')
 const links = document.querySelectorAll('a')
 const audio = document.querySelector('.audio')
 
-audio.addEventListener('timeupdate', function (e) {
-  console.log(song.currentTime)
-})
-
 const toggleHover = (shouldEffect = false, isClick = false) => {
   dot.classList.remove('dot-hover')
   dotOuter.classList.remove('dot-outer-hover')
