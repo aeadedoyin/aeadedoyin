@@ -68,7 +68,7 @@ h1 {
   font-size: 100%;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .footer {
     padding-bottom: 65px;
   }
