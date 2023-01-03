@@ -68,6 +68,12 @@ h1 {
   font-size: 100%;
 }
 
+@media screen and (max-width: 400px) {
+  .footer {
+    padding-bottom: 65px;
+  }
+}
+
 .hover-under {
   display: inline-block;
   position: relative;
