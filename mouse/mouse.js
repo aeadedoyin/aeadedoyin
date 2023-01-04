@@ -2,6 +2,7 @@ const dot = document.querySelector('.dot')
 const dotOuter = document.querySelector('.dot-outer')
 const links = document.querySelectorAll('a')
 const audio = document.querySelector('.audio')
+audio.muted = true
 
 const toggleHover = (shouldEffect = false, isClick = false) => {
   dot.classList.remove('dot-hover')
@@ -20,6 +21,10 @@ const toggleHover = (shouldEffect = false, isClick = false) => {
 
 document.addEventListener('mousedown', function () {
   toggleHover(true, true)
+})
+
+document.addEventListener('dblclick', function () {
+  audio.muted = !audio.muted
 })
 
 document.addEventListener('mouseup', function () {
