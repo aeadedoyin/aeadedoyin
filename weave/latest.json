@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "page": "https://aeadedoyin.com/weave",
   "files": {
-    "darwin-arm64": "https://github.com/aeadedoyin/aeadedoyin/releases/download/weave-v1.0.0/weave-1.0.0-arm64.dmg",
-    "darwin-x64": "https://github.com/aeadedoyin/aeadedoyin/releases/download/weave-v1.0.0/weave-1.0.0-x64.dmg"
+    "darwin-arm64": "https://weave-cdn.aeadedoyin.com/weave-1.0.0-arm64.dmg",
+    "darwin-x64": "https://weave-cdn.aeadedoyin.com/weave-1.0.0-x64.dmg"
   }
 }
