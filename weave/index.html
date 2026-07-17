@@ -94,7 +94,7 @@
     @keyframes draw { to { stroke-dashoffset: 0; } }
 
     .mark {
-      display: flex; align-items: flex-end; gap: 22px;
+      display: flex; align-items: center; gap: 18px;
       margin-bottom: 40px;
     }
     .mark img {
@@ -103,7 +103,7 @@
       animation: rise .9s cubic-bezier(.2, .8, .2, 1) both;
     }
     .mark .word {
-      font-size: 15px; color: var(--muted); padding-bottom: 6px;
+      font-size: 15px; color: var(--muted);
       animation: rise .9s .1s cubic-bezier(.2, .8, .2, 1) both;
     }
     .mark .word em { color: var(--amber); font-style: normal; }
@@ -140,6 +140,7 @@
 
     /* ---------- download ---------- */
     .dl {
+      scroll-margin-top: 45vh;
       margin: 48px 0 0;
       display: flex; flex-wrap: wrap; align-items: center; gap: 20px;
       animation: rise .9s .38s cubic-bezier(.2, .8, .2, 1) both;
@@ -344,10 +345,8 @@
       <h1>Every Claude&nbsp;Code session, <span class="thread-word">woven</span> into one window.</h1>
 
       <p class="sub">
-        Weave is a desktop console for <b>Claude Code</b>. Run several sessions
-        side by side in a chat-style UI, drop into a real terminal when you need
-        it, watch git diffs as they land, and keep parallel work isolated in
-        worktrees. No more juggling terminal windows.
+        A desktop console for <b>Claude Code</b>. Parallel sessions, a real
+        terminal one tab away, live git diffs, isolated worktrees.
       </p>
 
       <div class="dl" id="download">
