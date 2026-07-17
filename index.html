@@ -4,75 +4,90 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Adedoyin Akande. Senior Web Engineer at Paystack." />
+    <meta name="theme-color" content="#14111d" />
     <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/20503883?v=4" />
     <link rel="stylesheet" href="/main.css" />
     <link rel="stylesheet" href="/mouse/mouse.css" />
+    <script>
+      const theme = localStorage.getItem('theme') || 'dark'
+      document.documentElement.dataset.theme = theme
+      document.querySelector('meta[name="theme-color"]').content =
+        theme === 'dark' ? '#14111d' : '#fafaf8'
+    </script>
     <title>Adedoyin Akande</title>
   </head>
 
-  <body>
+  <body class="cursor-idle">
     <!--Mouse Related Vibes-->
     <section>
       <div class="dot"></div>
       <div class="dot-outer"></div>
-      <audio class="audio" src="/mouse/click.mp3"></audio>
     </section>
     <div class="center">
-      <img src="https://avatars.githubusercontent.com/u/20503883?v=4" alt="" srcset="" />
+      <img src="https://avatars.githubusercontent.com/u/20503883?v=4" alt="" draggable="false" />
       <div class="bio">
         Senior Web Engineer at
         <a
           class="paystack hover-under"
-          href="http://paystack.com"
+          href="https://paystack.com"
           target="_blank"
         >
           Paystack
         </a>
       </div>
       <div class="social">
+        <a class="hover-under" href="/weave">Weave</a>
+        <span>·</span>
         <a
           class="hover-under"
           target="_blank"
+          rel="noopener"
+          href="https://github.com/aeadedoyin"
+        >
+          GitHub
+        </a>
+        <span>·</span>
+        <a
+          class="hover-under"
+          target="_blank"
+          rel="noopener"
           href="https://www.linkedin.com/in/adedoyinakande/"
         >
-          LinkedIn 💼
+          LinkedIn
         </a>
+        <span>·</span>
         <a
           class="hover-under"
           target="_blank"
-          href="https://twitter.com/aeadedoyin"
+          rel="noopener"
+          href="https://x.com/aeadedoyin"
         >
-          Twitter #️⃣
-        </a>
-        <a
-          class="hover-under"
-          target="_blank"
-          href="https://github.com/aeadedoyin"
-          >
-          Github 🐼
-        </a>
-        <a
-          class="hover-under"
-          target="_blank"
-          href="https://medium.com/@aeadedoyin"
-        >
-          Medium ✍🏽
-        </a>
-        <a
-          class="hover-under"
-          target="_blank"
-          href="https://www.buymeacoffee.com/aeadedoyin"
-        >
-          Support 💰
+          X
         </a>
       </div>
     </div>
 
     <div class="footer">
       <h1>Adedoyin Akande</h1>
-      <div class="bio">Only usable things 🔆 Laravel x Nuxt</div>
+      <div class="bio">Only usable things</div>
+      <button class="theme-toggle" role="switch" aria-checked="true" aria-label="Dark mode">
+        <span class="knob"></span>
+      </button>
     </div>
 
     <script src="/mouse/mouse.js"></script>
+    <script>
+      const toggle = document.querySelector('.theme-toggle')
+      toggle.setAttribute('aria-checked', document.documentElement.dataset.theme === 'dark')
+      toggle.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        localStorage.setItem('theme', next)
+        toggle.setAttribute('aria-checked', next === 'dark')
+        document.querySelector('meta[name="theme-color"]').content =
+          next === 'dark' ? '#14111d' : '#fafaf8'
+      })
+    </script>
   </body>
 </html>
