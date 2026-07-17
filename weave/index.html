@@ -359,6 +359,24 @@
           Intel Mac
         </a>
       </div>
+
+      <div class="term" id="first-launch">
+        <div class="term-bar"><i></i><i></i><i></i><span>zsh</span></div>
+        <div class="term-body">
+          <p>
+            Heads up: builds are unsigned for now, so on first launch macOS
+            will refuse the app with <b>&ldquo;Weave is damaged and can&rsquo;t be
+            opened. You should move it to the Bin.&rdquo;</b> The app is fine;
+            that is Gatekeeper quarantining an unsigned download. After
+            dragging Weave to Applications, run this once (it asks for your
+            Mac password), then launch again:
+          </p>
+          <div class="cmd">
+            <code id="xattr-cmd">sudo xattr -cr /Applications/Weave.app</code>
+            <button type="button" onclick="copyCmd(this)">copy</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="reveal">
@@ -398,25 +416,7 @@
     </section>
 
     <section class="reveal">
-      <div class="kicker">First launch <em>/02</em></div>
-      <div class="term">
-        <div class="term-bar"><i></i><i></i><i></i><span>zsh</span></div>
-        <div class="term-body">
-          <p>
-            Builds are currently unsigned. If Gatekeeper reports the app as
-            damaged after you drag it to Applications, clear the quarantine
-            flag once and launch again:
-          </p>
-          <div class="cmd">
-            <code id="xattr-cmd">xattr -cr /Applications/Weave.app</code>
-            <button type="button" onclick="copyCmd(this)">copy</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="reveal">
-      <div class="kicker">You will need <em>/03</em></div>
+      <div class="kicker">You will need <em>/02</em></div>
       <ul class="reqs">
         <li><span>A <b>Mac</b>, Apple Silicon or Intel. Windows is not supported: Weave captures your environment through a POSIX login shell.</span></li>
         <li><span>The <b>Claude Code CLI</b>, installed and logged in: <code>npm i -g @anthropic-ai/claude-code</code>. Weave drives the real CLI, so it must be on your shell's PATH.</span></li>
