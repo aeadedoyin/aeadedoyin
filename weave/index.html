@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weave · A multi-session console for Claude Code</title>
+  <meta name="description" content="Weave is a macOS desktop console for Claude Code. Run parallel sessions side by side: chat UI, terminal takeover, git diffs, isolated worktrees." />
+  <link rel="icon" type="image/png" href="/weave/icon.png" />
+  <meta property="og:title" content="Weave" />
+  <meta property="og:description" content="A multi-session desktop console for Claude Code." />
+  <meta property="og:image" content="https://aeadedoyin.com/weave/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink-0: #0d0b13;
+      --ink-1: #14111d;
+      --ink-2: #1b1727;
+      --ink-3: #262033;
+      --line: #2c2539;
+      --text: #ece8f4;
+      --muted: #9a91b0;
+      --faint: #6b6382;
+      --amber: #f0a860;
+      --coral: #e87d5c;
+      --lavender: #b3a4ee;
+      --thread: #8d7fd0;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      --serif: "Newsreader", Georgia, serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ink-0);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--lavender); color: var(--ink-0); }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 79px, rgba(179, 164, 238, 0.045) 79px 80px),
+        repeating-linear-gradient(90deg, transparent 0 79px, rgba(179, 164, 238, 0.03) 79px 80px);
+      mask-image: radial-gradient(ellipse 120% 90% at 50% 0%, black 20%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 120% 90% at 50% 0%, black 20%, transparent 75%);
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 28px; }
+
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0 0;
+      font-size: 13px;
+    }
+    header a { color: var(--faint); text-decoration: none; transition: color .2s; }
+    header a:hover { color: var(--lavender); }
+    .crumb span { color: var(--line); margin: 0 6px; }
+    .crumb b { color: var(--muted); font-weight: 500; }
+
+    /* ---------- hero ---------- */
+    .hero { padding: 96px 0 40px; position: relative; }
+    .hero-threads {
+      position: absolute; left: 50%; top: 0;
+      width: 100vw; height: 100%;
+      transform: translateX(-50%);
+      pointer-events: none; overflow: visible;
+    }
+    .hero-threads path {
+      fill: none;
+      stroke-width: 1.25;
+      stroke-linecap: round;
+      stroke-dasharray: 1600;
+      stroke-dashoffset: 1600;
+      animation: draw 2.4s cubic-bezier(.4, 0, .2, 1) forwards;
+    }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    .mark {
+      display: flex; align-items: flex-end; gap: 22px;
+      margin-bottom: 40px;
+    }
+    .mark img {
+      width: 84px; height: 84px; border-radius: 20px;
+      box-shadow: 0 12px 48px rgba(179, 164, 238, .18), 0 2px 8px rgba(0, 0, 0, .5);
+      animation: rise .9s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .mark .word {
+      font-size: 15px; color: var(--muted); padding-bottom: 6px;
+      animation: rise .9s .1s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .mark .word em { color: var(--amber); font-style: normal; }
+
+    h1 {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(44px, 7.2vw, 84px);
+      line-height: 1.04;
+      letter-spacing: -0.015em;
+      max-width: 14ch;
+      animation: rise .9s .18s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    h1 .thread-word {
+      font-style: italic;
+      font-weight: 400;
+      background: linear-gradient(100deg, var(--amber) 10%, var(--coral) 45%, var(--lavender) 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      padding-right: .06em;
+    }
+    .hero p.sub {
+      margin-top: 28px;
+      max-width: 58ch;
+      color: var(--muted);
+      animation: rise .9s .28s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .hero p.sub b { color: var(--text); font-weight: 500; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ---------- download ---------- */
+    .dl {
+      margin: 48px 0 0;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 20px;
+      animation: rise .9s .38s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .btn {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: var(--mono); font-size: 15px; font-weight: 600;
+      color: var(--ink-0);
+      background: linear-gradient(115deg, var(--amber), var(--coral) 55%, var(--lavender) 130%);
+      padding: 17px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s;
+      box-shadow: 0 4px 24px rgba(232, 125, 92, .28);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(232, 125, 92, .4);
+    }
+    .btn:active { transform: translateY(0); }
+    .btn svg { flex-shrink: 0; }
+    .dl-meta { font-size: 13px; color: var(--faint); line-height: 1.9; }
+    .dl-meta b { color: var(--muted); font-weight: 500; }
+
+    /* ---------- sections ---------- */
+    section { padding: 88px 0 0; }
+    .kicker {
+      font-size: 12px; font-weight: 600; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--faint);
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 34px;
+    }
+    .kicker::after {
+      content: ""; height: 1px; flex: 0 0 64px;
+      background: linear-gradient(90deg, var(--thread), transparent);
+    }
+    .kicker em { color: var(--amber); font-style: normal; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .cell {
+      background: var(--ink-1);
+      padding: 30px 28px 34px;
+      transition: background .25s;
+    }
+    .cell:hover { background: var(--ink-2); }
+    .cell .n {
+      font-size: 12px; color: var(--thread);
+      display: block; margin-bottom: 18px;
+    }
+    .cell h3 {
+      font-family: var(--serif);
+      font-weight: 400; font-style: italic;
+      font-size: 23px; letter-spacing: .01em;
+      margin-bottom: 10px;
+    }
+    .cell p { font-size: 13.5px; color: var(--muted); }
+    .cell code {
+      font-family: var(--mono); font-size: 12px;
+      color: var(--lavender);
+      background: rgba(179, 164, 238, .08);
+      padding: 1px 6px; border-radius: 4px;
+    }
+
+    /* ---------- terminal / first launch ---------- */
+    .term {
+      background: var(--ink-1);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .term-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .term-bar i {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--ink-3); display: block;
+    }
+    .term-bar i:first-child { background: rgba(232, 125, 92, .55); }
+    .term-bar span { margin-left: auto; font-size: 12px; color: var(--faint); }
+    .term-body { padding: 26px 28px 30px; font-size: 14px; }
+    .term-body p { color: var(--muted); max-width: 62ch; }
+    .cmd {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-top: 20px;
+      background: var(--ink-0);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 15px 18px;
+    }
+    .cmd code { color: var(--text); }
+    .cmd code::before { content: "$ "; color: var(--amber); }
+    .cmd button {
+      font-family: var(--mono); font-size: 12px;
+      color: var(--faint);
+      background: none; border: 1px solid var(--line);
+      border-radius: 6px; padding: 6px 12px;
+      cursor: pointer;
+      transition: color .2s, border-color .2s;
+    }
+    .cmd button:hover { color: var(--lavender); border-color: var(--thread); }
+
+    /* ---------- requirements ---------- */
+    .reqs { list-style: none; max-width: 640px; }
+    .reqs li {
+      display: flex; gap: 18px;
+      padding: 18px 4px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px; color: var(--muted);
+    }
+    .reqs li:first-child { border-top: 1px solid var(--line); }
+    .reqs li::before {
+      content: "◆";
+      color: var(--coral); font-size: 10px;
+      line-height: 2.3; flex-shrink: 0;
+    }
+    .reqs b { color: var(--text); font-weight: 500; }
+    .reqs code {
+      font-size: 12.5px; color: var(--lavender);
+      background: rgba(179, 164, 238, .08);
+      padding: 1px 6px; border-radius: 4px;
+    }
+
+    /* ---------- footer ---------- */
+    footer { padding: 110px 0 60px; }
+    .lore {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(21px, 3vw, 27px);
+      line-height: 1.5;
+      max-width: 30ch;
+      color: var(--muted);
+    }
+    .lore i { color: var(--text); }
+    .lore .who { color: var(--lavender); }
+    .foot-row {
+      margin-top: 56px;
+      display: flex; flex-wrap: wrap; gap: 24px;
+      justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--faint);
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+    }
+    .foot-row a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .foot-row a:hover { color: var(--amber); }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s, transform .8s cubic-bezier(.2, .8, .2, 1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 64px; }
+      .cmd { flex-direction: column; align-items: stretch; }
+      .cmd code { overflow-x: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="crumb"><a href="/">aeadedoyin.com</a><span>/</span><b>weave</b></div>
+      <a href="#download">↓ download</a>
+    </header>
+
+    <section class="hero" id="top">
+      <svg class="hero-threads" viewBox="0 0 1440 520" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M -40 150 C 360 110, 620 210, 1480 140" stroke="#8d7fd0" opacity=".28" style="animation-delay:.1s" />
+        <path d="M -40 230 C 420 280, 700 160, 1480 240" stroke="#e87d5c" opacity=".2" style="animation-delay:.35s" />
+        <path d="M -40 320 C 380 270, 760 380, 1480 300" stroke="#f0a860" opacity=".16" style="animation-delay:.6s" />
+        <path d="M -40 410 C 460 460, 820 340, 1480 430" stroke="#8d7fd0" opacity=".12" style="animation-delay:.85s" />
+      </svg>
+
+      <div class="mark">
+        <img src="/weave/icon.png" alt="Weave app icon: a weaver bird perched on a thread" width="84" height="84" />
+        <div class="word">weave <em>v1.0.0</em></div>
+      </div>
+
+      <h1>Every Claude&nbsp;Code session, <span class="thread-word">woven</span> into one window.</h1>
+
+      <p class="sub">
+        Weave is a desktop console for <b>Claude Code</b>. Run several sessions
+        side by side in a chat-style UI, drop into a real terminal when you need
+        it, watch git diffs as they land, and keep parallel work isolated in
+        worktrees. No more juggling terminal windows.
+      </p>
+
+      <div class="dl" id="download">
+        <a class="btn" href="https://github.com/aeadedoyin/aeadedoyin/releases/download/weave-v1.0.0/weave-1.0.0-arm64.dmg" download>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download for macOS
+        </a>
+        <div class="dl-meta">
+          <b>weave-1.0.0-arm64.dmg</b> · 115 MB<br />
+          Apple Silicon · macOS
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="kicker">The loom <em>/01</em></div>
+      <div class="grid">
+        <div class="cell">
+          <span class="n">01</span>
+          <h3>Parallel sessions</h3>
+          <p>Run as many Claude Code sessions as you have ideas, side by side in one window. Each is its own long-lived conversation.</p>
+        </div>
+        <div class="cell">
+          <span class="n">02</span>
+          <h3>The real CLI</h3>
+          <p>Weave drives the actual <code>claude</code> binary on your PATH, with your shell environment captured per project. Your hooks, your config, your accounts.</p>
+        </div>
+        <div class="cell">
+          <span class="n">03</span>
+          <h3>Terminal takeover</h3>
+          <p>Any session can drop into a real PTY running <code>claude --resume</code>, then hand back to the chat view. Same session, both worlds.</p>
+        </div>
+        <div class="cell">
+          <span class="n">04</span>
+          <h3>Git, watched</h3>
+          <p>A live diff panel shows what each session is changing as it happens, before anything is committed.</p>
+        </div>
+        <div class="cell">
+          <span class="n">05</span>
+          <h3>Worktree isolation</h3>
+          <p>Point parallel sessions at isolated git worktrees so they never step on each other's changes.</p>
+        </div>
+        <div class="cell">
+          <span class="n">06</span>
+          <h3>Multiple accounts</h3>
+          <p>Personal and work Claude accounts live together via config dirs, with an in-app <code>/login</code> flow per account.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="kicker">First launch <em>/02</em></div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><span>zsh</span></div>
+        <div class="term-body">
+          <p>
+            Builds are currently unsigned. If Gatekeeper reports the app as
+            damaged after you drag it to Applications, clear the quarantine
+            flag once and launch again:
+          </p>
+          <div class="cmd">
+            <code id="xattr-cmd">xattr -cr /Applications/Weave.app</code>
+            <button type="button" onclick="copyCmd(this)">copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="kicker">You will need <em>/03</em></div>
+      <ul class="reqs">
+        <li><span>A Mac with <b>Apple Silicon</b> (M1 or later). This build is arm64 only.</span></li>
+        <li><span>The <b>Claude Code CLI</b>, installed and logged in: <code>npm i -g @anthropic-ai/claude-code</code>. Weave drives the real CLI, so it must be on your shell's PATH.</span></li>
+        <li><span><b>git</b>, optionally, for the diff panel and worktree isolation.</span></li>
+      </ul>
+    </section>
+
+    <footer class="reveal">
+      <p class="lore">
+        Named after <i class="who">Warren Weaver</i>, Claude Shannon's co-author on
+        <i>The Mathematical Theory of Communication</i>. Also: it weaves
+        <i>threads</i>.
+      </p>
+      <div class="foot-row">
+        <span>MIT licensed</span>
+        <a href="/">← aeadedoyin.com</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    function copyCmd(btn) {
+      navigator.clipboard.writeText(document.getElementById('xattr-cmd').textContent).then(function () {
+        btn.textContent = 'copied';
+        setTimeout(function () { btn.textContent = 'copy'; }, 1600);
+      });
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  </script>
+</body>
+</html>
