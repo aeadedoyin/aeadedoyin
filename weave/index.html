@@ -8,7 +8,15 @@
   <link rel="icon" type="image/png" href="/weave/icon.png" />
   <meta property="og:title" content="Weave" />
   <meta property="og:description" content="A multi-session desktop console for Claude Code." />
-  <meta property="og:image" content="https://aeadedoyin.com/weave/icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aeadedoyin.com/weave" />
+  <meta property="og:image" content="https://aeadedoyin.com/weave/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Weave" />
+  <meta name="twitter:description" content="A multi-session desktop console for Claude Code." />
+  <meta name="twitter:image" content="https://aeadedoyin.com/weave/og.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
@@ -156,6 +164,13 @@
     .btn svg { flex-shrink: 0; }
     .dl-meta { font-size: 13px; color: var(--faint); line-height: 1.9; }
     .dl-meta b { color: var(--muted); font-weight: 500; }
+    .dl-meta a {
+      color: var(--lavender);
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+      transition: color .2s;
+    }
+    .dl-meta a:hover { color: var(--amber); }
 
     /* ---------- sections ---------- */
     section { padding: 88px 0 0; }
@@ -339,8 +354,8 @@
           Download for macOS
         </a>
         <div class="dl-meta">
-          <b>weave-1.0.0-arm64.dmg</b> · 115 MB<br />
-          Apple Silicon · macOS
+          <b>weave-1.0.0-arm64.dmg</b> · 115 MB · Apple Silicon<br />
+          Intel Mac? <a href="https://github.com/aeadedoyin/aeadedoyin/releases/download/weave-v1.0.0/weave-1.0.0-x64.dmg" download>weave-1.0.0-x64.dmg</a> · 120 MB
         </div>
       </div>
     </section>
@@ -402,7 +417,7 @@
     <section class="reveal">
       <div class="kicker">You will need <em>/03</em></div>
       <ul class="reqs">
-        <li><span>A Mac with <b>Apple Silicon</b> (M1 or later). This build is arm64 only.</span></li>
+        <li><span>A <b>Mac</b>, Apple Silicon or Intel. Windows is not supported: Weave captures your environment through a POSIX login shell.</span></li>
         <li><span>The <b>Claude Code CLI</b>, installed and logged in: <code>npm i -g @anthropic-ai/claude-code</code>. Weave drives the real CLI, so it must be on your shell's PATH.</span></li>
         <li><span><b>git</b>, optionally, for the diff panel and worktree isolation.</span></li>
       </ul>
