@@ -1,0 +1,3 @@
+# weave auto-updater: old installs hardcode this path; R2 is the source of truth now.
+# Forced (!) so it wins even though a static file used to live here. Query string (?v=) passes through.
+/weave/latest.json  https://weave-cdn.aeadedoyin.com/latest.json  301!
