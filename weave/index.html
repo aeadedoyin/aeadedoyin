@@ -229,6 +229,16 @@
       border-radius: 14px;
       overflow: hidden;
     }
+    #first-launch {
+      margin-top: 30px;
+      border-color: rgba(232, 125, 92, .3);
+      box-shadow: 0 0 0 1px rgba(232, 125, 92, .05), 0 10px 40px rgba(232, 125, 92, .07);
+      animation: rise .9s .46s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    #first-launch .term-bar { border-bottom-color: rgba(232, 125, 92, .18); }
+    #first-launch .term-bar span { color: var(--coral); letter-spacing: .04em; }
+    .term-body p .warn { color: var(--coral); font-weight: 600; }
+    .term-body p i { color: var(--text); font-style: italic; }
     .term-bar {
       display: flex; align-items: center; gap: 8px;
       padding: 13px 18px;
@@ -361,15 +371,12 @@
       </div>
 
       <div class="term" id="first-launch">
-        <div class="term-bar"><i></i><i></i><i></i><span>zsh</span></div>
+        <div class="term-bar"><i></i><i></i><i></i><span>first launch</span></div>
         <div class="term-body">
           <p>
-            Heads up: builds are unsigned for now, so on first launch macOS
-            will refuse the app with <b>&ldquo;Weave is damaged and can&rsquo;t be
-            opened. You should move it to the Bin.&rdquo;</b> The app is fine;
-            that is Gatekeeper quarantining an unsigned download. After
-            dragging Weave to Applications, run this once (it asks for your
-            Mac password), then launch again:
+            <span class="warn">Builds are unsigned</span>, so macOS blocks the
+            first launch: <i>&ldquo;Weave is damaged.&rdquo;</i> It isn&rsquo;t.
+            Drag Weave to Applications, run this once, relaunch:
           </p>
           <div class="cmd">
             <code id="xattr-cmd">sudo xattr -cr /Applications/Weave.app</code>
@@ -418,9 +425,9 @@
     <section class="reveal">
       <div class="kicker">You will need <em>/02</em></div>
       <ul class="reqs">
-        <li><span>A <b>Mac</b>, Apple Silicon or Intel. Windows is not supported: Weave captures your environment through a POSIX login shell.</span></li>
-        <li><span>The <b>Claude Code CLI</b>, installed and logged in: <code>npm i -g @anthropic-ai/claude-code</code>. Weave drives the real CLI, so it must be on your shell's PATH.</span></li>
-        <li><span><b>git</b>, optionally, for the diff panel and worktree isolation.</span></li>
+        <li><span>A <b>Mac</b>, Apple Silicon or Intel. No Windows: Weave reads your env from a POSIX login shell.</span></li>
+        <li><span>The <b>Claude Code CLI</b>, logged in and on your PATH: <code>npm i -g @anthropic-ai/claude-code</code>.</span></li>
+        <li><span><b>git</b>, optionally, for diffs and worktree isolation.</span></li>
       </ul>
     </section>
 
