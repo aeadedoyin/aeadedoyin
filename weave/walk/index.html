@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weave · Walkthrough</title>
+  <meta name="description" content="Six unedited minutes with Weave, the macOS desktop console for Claude Code: parallel sessions, terminal takeover, live git diffs, worktree isolation." />
+  <link rel="icon" type="image/png" href="/weave/icon.png" />
+  <link rel="canonical" href="https://aeadedoyin.com/weave/walk" />
+  <meta name="theme-color" content="#0d0b13" />
+
+  <meta property="og:site_name" content="aeadedoyin.com" />
+  <meta property="og:title" content="Six minutes with Weave" />
+  <meta property="og:description" content="An unedited walkthrough of Weave, the desktop console for Claude Code: parallel sessions, terminal takeover, live git diffs, worktrees." />
+  <meta property="og:type" content="video.other" />
+  <meta property="og:url" content="https://aeadedoyin.com/weave/walk" />
+  <meta property="og:image" content="https://aeadedoyin.com/weave/walk/og.png" />
+  <meta property="og:image:secure_url" content="https://aeadedoyin.com/weave/walk/og.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A play button over the Weave wordmark: six minutes with Weave." />
+  <meta property="og:video" content="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4" />
+  <meta property="og:video:secure_url" content="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4" />
+  <meta property="og:video:url" content="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4" />
+  <meta property="og:video:type" content="video/mp4" />
+  <meta property="og:video:width" content="1920" />
+  <meta property="og:video:height" content="1076" />
+  <meta property="video:duration" content="381" />
+
+  <meta name="twitter:card" content="player" />
+  <meta name="twitter:title" content="Six minutes with Weave" />
+  <meta name="twitter:description" content="An unedited walkthrough of Weave, the desktop console for Claude Code." />
+  <meta name="twitter:image" content="https://aeadedoyin.com/weave/walk/og.png" />
+  <meta name="twitter:player" content="https://aeadedoyin.com/weave/walk/embed.html" />
+  <meta name="twitter:player:width" content="1920" />
+  <meta name="twitter:player:height" content="1076" />
+  <meta name="twitter:player:stream" content="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4" />
+  <meta name="twitter:player:stream:content_type" content="video/mp4" />
+
+  <link rel="preconnect" href="https://weave-cdn.aeadedoyin.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Six minutes with Weave",
+    "description": "An unedited walkthrough of Weave, the macOS desktop console for Claude Code: parallel sessions, terminal takeover, live git diffs, worktree isolation.",
+    "thumbnailUrl": "https://aeadedoyin.com/weave/walk/og.png",
+    "contentUrl": "https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4",
+    "embedUrl": "https://aeadedoyin.com/weave/walk/embed.html",
+    "duration": "PT6M21S"
+  }
+  </script>
+
+  <style>
+    :root {
+      --ink-0: #0d0b13;
+      --ink-1: #14111d;
+      --ink-2: #1b1727;
+      --line: #2c2539;
+      --text: #ece8f4;
+      --muted: #9a91b0;
+      --faint: #6b6382;
+      --amber: #f0a860;
+      --coral: #e87d5c;
+      --lavender: #b3a4ee;
+      --thread: #8d7fd0;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      --serif: "Newsreader", Georgia, serif;
+      --warm: linear-gradient(115deg, var(--amber), var(--coral) 55%, var(--lavender) 130%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--ink-0);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--lavender); color: var(--ink-0); }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 79px, rgba(179, 164, 238, .045) 79px 80px),
+        repeating-linear-gradient(90deg, transparent 0 79px, rgba(179, 164, 238, .03) 79px 80px);
+      mask-image: radial-gradient(ellipse 120% 90% at 50% 0%, black 20%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 120% 90% at 50% 0%, black 20%, transparent 75%);
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 28px; }
+
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0 0; font-size: 13px;
+    }
+    header a { color: var(--faint); text-decoration: none; transition: color .2s; }
+    header a:hover { color: var(--lavender); }
+    .crumb span { color: var(--line); margin: 0 6px; }
+    .crumb b { color: var(--muted); font-weight: 500; }
+
+    .intro { padding: 64px 0 34px; }
+    .kicker {
+      font-size: 12px; font-weight: 600; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--faint);
+      display: flex; align-items: center; gap: 14px; margin-bottom: 26px;
+    }
+    .kicker::after {
+      content: ""; height: 1px; flex: 0 0 64px;
+      background: linear-gradient(90deg, var(--thread), transparent);
+    }
+    .kicker em { color: var(--amber); font-style: normal; }
+    h1 {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(38px, 5.6vw, 64px);
+      line-height: 1.06; letter-spacing: -.015em; max-width: 20ch;
+    }
+    h1 .thread-word {
+      font-style: italic; font-weight: 400;
+      background: linear-gradient(100deg, var(--amber) 10%, var(--coral) 45%, var(--lavender) 90%);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent; padding-right: .06em;
+    }
+    .intro p {
+      margin-top: 22px; max-width: 58ch; color: var(--muted);
+    }
+    .intro p b { color: var(--text); font-weight: 500; }
+
+    /* ---------- player ---------- */
+    .player {
+      position: relative;
+      aspect-ratio: 1920 / 1076;
+      background: var(--ink-1);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .55), 0 0 0 1px rgba(179, 164, 238, .04);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .player video {
+      display: block; width: 100%; height: 100%;
+      object-fit: contain; background: var(--ink-0);
+    }
+    .player.idle { cursor: none; }
+    .player.idle .bar, .player.idle .top { opacity: 0; pointer-events: none; }
+
+    .top {
+      position: absolute; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 18px 34px;
+      font-size: 12px; color: var(--muted);
+      background: linear-gradient(180deg, rgba(13, 11, 19, .78), transparent);
+      transition: opacity .28s;
+      pointer-events: none;
+    }
+    .top img { width: 22px; height: 22px; border-radius: 6px; }
+    .top .dot { color: var(--line); }
+    .top .tag { color: var(--amber); }
+
+    /* big centre play */
+    .poster-play {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      border: 0; padding: 0;
+      background: radial-gradient(closest-side, rgba(232, 125, 92, .16), transparent 70%);
+      cursor: pointer;
+      transition: opacity .3s, transform .3s;
+    }
+    .poster-play svg { width: 108px; height: 108px; overflow: visible; }
+    .poster-play circle.ring { fill: rgba(20, 17, 29, .88); stroke: url(#pgrad); stroke-width: 2.4; }
+    .poster-play circle.halo { fill: none; stroke: var(--line); stroke-width: 1; opacity: .8; }
+    .poster-play path.glyph { fill: url(#pgrad); stroke: url(#pgrad); stroke-width: 9; stroke-linejoin: round; }
+    .poster-play:hover svg { transform: scale(1.05); }
+    .poster-play svg { transition: transform .25s cubic-bezier(.2, .8, .2, 1); }
+    .player.started .poster-play { opacity: 0; pointer-events: none; transform: scale(1.1); }
+
+    /* control bar */
+    .bar {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 30px 16px 14px;
+      background: linear-gradient(0deg, rgba(13, 11, 19, .92) 12%, rgba(13, 11, 19, .55) 60%, transparent);
+      transition: opacity .28s;
+    }
+    .scrub {
+      position: relative; height: 16px;
+      display: flex; align-items: center;
+      cursor: pointer; touch-action: none;
+    }
+    .scrub .track {
+      position: relative; width: 100%; height: 4px;
+      background: rgba(236, 232, 244, .16);
+      border-radius: 99px; overflow: hidden;
+      transition: height .16s;
+    }
+    .scrub:hover .track, .scrub.dragging .track { height: 7px; }
+    .scrub .buf, .scrub .played {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      border-radius: 99px;
+    }
+    .scrub .buf { background: rgba(236, 232, 244, .18); }
+    .scrub .played { background: var(--warm); }
+    .scrub .thumb {
+      position: absolute; top: 50%; left: 0;
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--text);
+      box-shadow: 0 0 0 1px rgba(13, 11, 19, .6), 0 2px 8px rgba(0, 0, 0, .5);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform .16s;
+      pointer-events: none;
+    }
+    .scrub:hover .thumb, .scrub.dragging .thumb { transform: translate(-50%, -50%) scale(1); }
+    .scrub .tip {
+      position: absolute; bottom: 20px;
+      transform: translateX(-50%);
+      background: var(--ink-0);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11px; color: var(--text);
+      opacity: 0; transition: opacity .16s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .scrub:hover .tip, .scrub.dragging .tip { opacity: 1; }
+
+    .row {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 6px;
+    }
+    .row button {
+      display: grid; place-items: center;
+      width: 34px; height: 34px;
+      border: 0; border-radius: 8px;
+      background: none; color: var(--muted);
+      cursor: pointer;
+      transition: color .18s, background .18s;
+    }
+    .row button:hover { color: var(--text); background: rgba(236, 232, 244, .08); }
+    .row button:focus-visible { outline: 1px solid var(--thread); outline-offset: 1px; }
+    .row button.rate {
+      width: auto; padding: 0 10px;
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+      letter-spacing: .02em;
+    }
+    .row .time {
+      font-size: 12px; color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      margin-left: 4px;
+    }
+    .row .time i { color: var(--faint); font-style: normal; margin: 0 4px; }
+    .row .spacer { flex: 1; }
+    .vol {
+      display: flex; align-items: center;
+      width: 0; overflow: hidden;
+      transition: width .22s cubic-bezier(.2, .8, .2, 1);
+    }
+    .volwrap:hover .vol, .vol:focus-within { width: 74px; }
+    .vol input {
+      -webkit-appearance: none; appearance: none;
+      width: 66px; height: 16px; margin: 0 4px 0 4px;
+      background: none; cursor: pointer;
+    }
+    .vol input::-webkit-slider-runnable-track {
+      height: 4px; border-radius: 99px;
+      background: rgba(236, 232, 244, .2);
+    }
+    .vol input::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 11px; height: 11px; margin-top: -3.5px;
+      border-radius: 50%; background: var(--text);
+    }
+    .vol input::-moz-range-track { height: 4px; border-radius: 99px; background: rgba(236, 232, 244, .2); }
+    .vol input::-moz-range-thumb { width: 11px; height: 11px; border: 0; border-radius: 50%; background: var(--text); }
+    .volwrap { display: flex; align-items: center; }
+
+    /* seek nudge feedback */
+    .nudge {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 13px; color: var(--text);
+      background: rgba(13, 11, 19, .82);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 7px 16px;
+      opacity: 0; transition: opacity .2s;
+      pointer-events: none;
+    }
+    .nudge.show { opacity: 1; }
+
+    .player:fullscreen { border: 0; border-radius: 0; aspect-ratio: auto; height: 100%; }
+
+    /* ---------- below ---------- */
+    .meta {
+      margin-top: 20px;
+      display: flex; flex-wrap: wrap; gap: 10px 22px;
+      align-items: center;
+      font-size: 12.5px; color: var(--faint);
+    }
+    .meta .dot { color: var(--line); }
+    .meta kbd {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--muted);
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 6px;
+    }
+
+    .cta {
+      margin: 66px 0 0;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: var(--mono); font-size: 15px; font-weight: 600;
+      color: var(--ink-0);
+      background: var(--warm);
+      padding: 16px 28px; border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(232, 125, 92, .28);
+      transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(232, 125, 92, .4); }
+    .btn:active { transform: translateY(0); }
+    .btn-ghost {
+      background: none; color: var(--muted);
+      border: 1px solid var(--line); box-shadow: none;
+    }
+    .btn-ghost:hover { color: var(--lavender); border-color: var(--thread); box-shadow: none; }
+
+    footer { padding: 88px 0 60px; }
+    .foot-row {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--faint);
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+    }
+    .foot-row a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .foot-row a:hover { color: var(--amber); }
+
+    @media (max-width: 700px) {
+      .intro { padding-top: 44px; }
+      .poster-play svg { width: 74px; height: 74px; }
+      .top { padding: 12px 14px 28px; }
+      .bar { padding: 26px 10px 10px; }
+      .row button { width: 32px; height: 32px; }
+      .volwrap { display: none; }
+      .meta .keys { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="crumb"><a href="/">aeadedoyin.com</a><span>/</span><a href="/weave">weave</a><span>/</span><b>walk</b></div>
+      <a href="/weave#download">↓ download</a>
+    </header>
+
+    <section class="intro">
+      <div class="kicker">Walkthrough <em>/6:21</em></div>
+      <h1>Six minutes with <span class="thread-word">Weave</span>.</h1>
+      <p>
+        One take, no cuts. Parallel <b>Claude Code</b> sessions running side by side,
+        a terminal takeover mid-session, live git diffs, and worktrees keeping
+        everything out of each other's way.
+      </p>
+    </section>
+
+    <div class="player" id="player">
+      <video id="v" playsinline preload="metadata"
+        poster="https://weave-cdn.aeadedoyin.com/weave-walkthrough-poster.jpg"
+        src="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4">
+        <p>Your browser can't play this video.
+          <a href="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4">Download the mp4</a> instead.</p>
+      </video>
+
+      <div class="top">
+        <img src="/weave/icon.png" alt="" width="22" height="22" />
+        <span>weave</span><span class="dot">·</span><span class="tag">walkthrough</span>
+      </div>
+
+      <button class="poster-play" id="bigPlay" type="button" aria-label="Play the walkthrough">
+        <svg viewBox="-60 -60 120 120" aria-hidden="true">
+          <defs>
+            <linearGradient id="pgrad" x1="0" y1="0" x2="0.9" y2="1">
+              <stop offset="0" stop-color="#f0a860" />
+              <stop offset="0.55" stop-color="#e87d5c" />
+              <stop offset="1" stop-color="#b3a4ee" />
+            </linearGradient>
+          </defs>
+          <circle class="halo" r="52" />
+          <circle class="ring" r="42" />
+          <path class="glyph" d="M -16 -18 L 20 0 L -16 18 Z" transform="translate(-2 0)" />
+        </svg>
+      </button>
+
+      <div class="nudge" id="nudge"></div>
+
+      <div class="bar" id="bar">
+        <div class="scrub" id="scrub" role="slider" tabindex="0"
+          aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="track">
+            <div class="buf" id="buf"></div>
+            <div class="played" id="played"></div>
+          </div>
+          <div class="thumb" id="thumb"></div>
+          <div class="tip" id="tip">0:00</div>
+        </div>
+
+        <div class="row">
+          <button id="toggle" type="button" aria-label="Play">
+            <svg id="icoPlay" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a1 1 0 0 0 1.53.85l10.5-6.8a1 1 0 0 0 0-1.7L9.53 4.35A1 1 0 0 0 8 5.2Z"/></svg>
+            <svg id="icoPause" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 4h3.2v16H7zM13.8 4H17v16h-3.2z"/></svg>
+          </button>
+
+          <div class="volwrap">
+            <button id="mute" type="button" aria-label="Mute">
+              <svg id="icoVol" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.6 8.6a5 5 0 0 1 0 6.8"/><path d="M18.3 5.9a8.5 8.5 0 0 1 0 12.2"/></svg>
+              <svg id="icoMute" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></svg>
+            </button>
+            <div class="vol">
+              <input id="volume" type="range" min="0" max="1" step="0.02" value="1" aria-label="Volume" />
+            </div>
+          </div>
+
+          <span class="time"><span id="cur">0:00</span><i>/</i><span id="dur">6:21</span></span>
+
+          <span class="spacer"></span>
+
+          <button class="rate" id="rate" type="button" aria-label="Playback speed">1×</button>
+
+          <button id="pip" type="button" aria-label="Picture in picture" hidden>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><rect x="12" y="11" width="8" height="7" rx="1.5" fill="currentColor" stroke="none"/></svg>
+          </button>
+
+          <button id="fs" type="button" aria-label="Fullscreen">
+            <svg id="icoFs" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H4.5A1.5 1.5 0 0 0 3 4.5V9M15 3h4.5A1.5 1.5 0 0 1 21 4.5V9M9 21H4.5A1.5 1.5 0 0 1 3 19.5V15M15 21h4.5A1.5 1.5 0 0 0 21 19.5V15"/></svg>
+            <svg id="icoFsOut" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M3 8h4.5A1.5 1.5 0 0 0 9 6.5V2M21 8h-4.5A1.5 1.5 0 0 1 15 6.5V2M3 16h4.5A1.5 1.5 0 0 1 9 17.5V22M21 16h-4.5A1.5 1.5 0 0 0 15 17.5V22"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta">
+      <span>6:21 <span class="dot">·</span> 1080p <span class="dot">·</span> no cuts</span>
+      <span class="keys">
+        <kbd>space</kbd> play <span class="dot">·</span>
+        <kbd>←</kbd><kbd>→</kbd> 5s <span class="dot">·</span>
+        <kbd>J</kbd><kbd>L</kbd> 10s <span class="dot">·</span>
+        <kbd>M</kbd> mute <span class="dot">·</span>
+        <kbd>F</kbd> fullscreen
+      </span>
+    </div>
+
+    <div class="cta">
+      <a class="btn" href="/weave#download">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Get Weave
+      </a>
+      <a class="btn btn-ghost" href="https://weave-cdn.aeadedoyin.com/weave-walkthrough.mp4" download>
+        Download the mp4 (23 MB)
+      </a>
+    </div>
+
+    <footer>
+      <div class="foot-row">
+        <span>MIT licensed</span>
+        <a href="/weave">← back to weave</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      var player = document.getElementById('player');
+      var v = document.getElementById('v');
+      var scrub = document.getElementById('scrub');
+      var played = document.getElementById('played');
+      var buf = document.getElementById('buf');
+      var thumb = document.getElementById('thumb');
+      var tip = document.getElementById('tip');
+      var cur = document.getElementById('cur');
+      var dur = document.getElementById('dur');
+      var nudge = document.getElementById('nudge');
+      var icoPlay = document.getElementById('icoPlay');
+      var icoPause = document.getElementById('icoPause');
+      var icoVol = document.getElementById('icoVol');
+      var icoMute = document.getElementById('icoMute');
+      var icoFs = document.getElementById('icoFs');
+      var icoFsOut = document.getElementById('icoFsOut');
+      var toggle = document.getElementById('toggle');
+      var rateBtn = document.getElementById('rate');
+      var pipBtn = document.getElementById('pip');
+      var volume = document.getElementById('volume');
+
+      function fmt(s) {
+        if (!isFinite(s) || s < 0) s = 0;
+        var m = Math.floor(s / 60);
+        var r = Math.floor(s % 60);
+        return m + ':' + (r < 10 ? '0' : '') + r;
+      }
+
+      function play() {
+        player.classList.add('started');
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      function togglePlay() { v.paused ? play() : v.pause(); }
+
+      document.getElementById('bigPlay').addEventListener('click', play);
+      toggle.addEventListener('click', togglePlay);
+
+      v.addEventListener('play', function () {
+        icoPlay.hidden = true; icoPause.hidden = false;
+        toggle.setAttribute('aria-label', 'Pause');
+        player.classList.add('started');
+        restIdle();
+      });
+      v.addEventListener('pause', function () {
+        icoPlay.hidden = false; icoPause.hidden = true;
+        toggle.setAttribute('aria-label', 'Play');
+        player.classList.remove('idle');
+      });
+      v.addEventListener('ended', function () {
+        player.classList.remove('started', 'idle');
+      });
+
+      v.addEventListener('loadedmetadata', function () { dur.textContent = fmt(v.duration); });
+
+      var dragging = false;
+      function paint() {
+        if (!v.duration) return;
+        if (!dragging) {
+          var pct = (v.currentTime / v.duration) * 100;
+          played.style.width = pct + '%';
+          thumb.style.left = pct + '%';
+          scrub.setAttribute('aria-valuenow', Math.round(pct));
+        }
+        cur.textContent = fmt(v.currentTime);
+        if (v.buffered.length) {
+          buf.style.width = (v.buffered.end(v.buffered.length - 1) / v.duration) * 100 + '%';
+        }
+      }
+      v.addEventListener('timeupdate', paint);
+      v.addEventListener('progress', paint);
+
+      function ratioAt(e) {
+        var r = scrub.getBoundingClientRect();
+        return Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      }
+      function preview(e) {
+        var ratio = ratioAt(e);
+        var r = scrub.getBoundingClientRect();
+        tip.textContent = fmt(ratio * (v.duration || 381));
+        tip.style.left = Math.min(r.width - 26, Math.max(26, ratio * r.width)) + 'px';
+        if (dragging) {
+          played.style.width = ratio * 100 + '%';
+          thumb.style.left = ratio * 100 + '%';
+          cur.textContent = tip.textContent;
+        }
+      }
+      scrub.addEventListener('pointermove', preview);
+      scrub.addEventListener('pointerdown', function (e) {
+        dragging = true;
+        scrub.classList.add('dragging');
+        scrub.setPointerCapture(e.pointerId);
+        preview(e);
+      });
+      scrub.addEventListener('pointerup', function (e) {
+        if (!dragging) return;
+        dragging = false;
+        scrub.classList.remove('dragging');
+        if (v.duration) v.currentTime = ratioAt(e) * v.duration;
+        paint();
+      });
+      scrub.addEventListener('keydown', function (e) {
+        var step = e.key === 'ArrowLeft' ? -5 : e.key === 'ArrowRight' ? 5 : 0;
+        if (!step) return;
+        e.preventDefault();
+        seek(step);
+      });
+
+      function seek(delta) {
+        if (!v.duration) return;
+        v.currentTime = Math.min(v.duration, Math.max(0, v.currentTime + delta));
+        flash((delta > 0 ? '+' : '−') + Math.abs(delta) + 's');
+      }
+      var nudgeTimer;
+      function flash(text) {
+        nudge.textContent = text;
+        nudge.classList.add('show');
+        clearTimeout(nudgeTimer);
+        nudgeTimer = setTimeout(function () { nudge.classList.remove('show'); }, 620);
+      }
+
+      document.getElementById('mute').addEventListener('click', function () {
+        v.muted = !v.muted;
+        if (!v.muted && v.volume === 0) v.volume = 0.6;
+      });
+      volume.addEventListener('input', function () {
+        v.volume = Number(volume.value);
+        v.muted = v.volume === 0;
+      });
+      v.addEventListener('volumechange', function () {
+        var off = v.muted || v.volume === 0;
+        icoVol.hidden = off; icoMute.hidden = !off;
+        volume.value = v.muted ? 0 : v.volume;
+        document.getElementById('mute').setAttribute('aria-label', off ? 'Unmute' : 'Mute');
+      });
+
+      var RATES = [1, 1.25, 1.5, 2, 0.75];
+      var ri = 0;
+      rateBtn.addEventListener('click', function () {
+        ri = (ri + 1) % RATES.length;
+        v.playbackRate = RATES[ri];
+        rateBtn.textContent = RATES[ri] + '×';
+      });
+
+      if (document.pictureInPictureEnabled) {
+        pipBtn.hidden = false;
+        pipBtn.addEventListener('click', function () {
+          if (document.pictureInPictureElement) document.exitPictureInPicture();
+          else v.requestPictureInPicture().catch(function () {});
+        });
+      }
+
+      function toggleFs() {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else if (player.requestFullscreen) player.requestFullscreen();
+        else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+      }
+      document.getElementById('fs').addEventListener('click', toggleFs);
+      document.addEventListener('fullscreenchange', function () {
+        var on = !!document.fullscreenElement;
+        icoFs.hidden = on; icoFsOut.hidden = !on;
+      });
+
+      /* click the frame to play/pause, double-click for fullscreen */
+      var clickTimer;
+      v.addEventListener('click', function () {
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(togglePlay, 190);
+      });
+      v.addEventListener('dblclick', function () {
+        clearTimeout(clickTimer);
+        toggleFs();
+      });
+
+      /* hide the chrome while playing and the pointer is still */
+      var idleTimer;
+      function restIdle() {
+        clearTimeout(idleTimer);
+        player.classList.remove('idle');
+        if (v.paused) return;
+        idleTimer = setTimeout(function () {
+          if (!v.paused) player.classList.add('idle');
+        }, 2600);
+      }
+      player.addEventListener('pointermove', restIdle);
+      player.addEventListener('pointerleave', function () {
+        clearTimeout(idleTimer);
+        if (!v.paused) player.classList.add('idle');
+      });
+      document.getElementById('bar').addEventListener('pointerenter', function () {
+        clearTimeout(idleTimer);
+        player.classList.remove('idle');
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        var t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+        var k = e.key.toLowerCase();
+        /* let a focused control handle its own space/enter */
+        if (k === ' ' && t && t.tagName === 'BUTTON') return;
+        if (k === ' ' || k === 'k') { e.preventDefault(); togglePlay(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(-5); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); seek(5); }
+        else if (k === 'j') { seek(-10); }
+        else if (k === 'l') { seek(10); }
+        else if (k === 'm') { v.muted = !v.muted; }
+        else if (k === 'f') { toggleFs(); }
+        else if (k >= '0' && k <= '9' && v.duration) {
+          v.currentTime = (Number(k) / 10) * v.duration;
+        }
+      });
+    })();
+  </script>
+  <script data-goatcounter="https://aeadedoyin.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
